@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>Mascotas con estado: {{ estado }}</h2>
+
+<ul>
+    {% for mascota in mascotas %}
+        <li><a href="/mascotas/{{ mascota.id }}/">{{ mascota.nombre }}</a> - {{ mascota.especie }}</li>
+    {% empty %}
+        <li>No hay mascotas con este estado.</li>
+    {% endfor %}
+</ul>
+
+<p><a href="/">Volver a la lista</a></p>
+{% endblock %}

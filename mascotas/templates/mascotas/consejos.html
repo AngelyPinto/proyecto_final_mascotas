@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>Consejos para encontrar tu mascota</h2>
+
+<p>Esta informacion viene de un microservicio propio, conectado a una base de datos en la nube.</p>
+
+<ul>
+    {% for consejo in consejos %}
+        <li>{{ consejo.texto }}</li>
+    {% empty %}
+        <li>No se pudo cargar la informacion del microservicio en este momento.</li>
+    {% endfor %}
+</ul>
+
+<p><a href="/">Volver a la lista de mascotas</a></p>
+{% endblock %}

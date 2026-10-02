@@ -1,0 +1,29 @@
+COMO DESPLEGAR ESTE MICROSERVICIO EN RENDER
+
+Este microservicio vive dentro del mismo repositorio que tu app Django,
+en la carpeta microservicios/microservicio-eliminar-java.
+
+1. Sube TODO el proyecto (la carpeta proyecto-completo entera) a tu
+   repositorio de GitHub principal (el mismo de tu app Django).
+
+2. En Render: New + Web Service, conecta ese mismo repositorio.
+
+3. Configuracion:
+   Root Directory: microservicios/microservicio-eliminar-java
+   Render detecta el Dockerfile solo (Runtime: Docker).
+   No hace falta poner Build Command ni Start Command.
+
+4. En Environment Variables, agrega (valores desde MongoDB Atlas > Data API,
+   los mismos del microservicio de PHP):
+   MONGO_DATA_API_URL
+   MONGO_DATA_API_KEY
+   MONGO_DATA_SOURCE = ClusterMascotas
+   MONGO_DATABASE = mascotas_db
+   MONGO_COLLECTION = consejos
+
+5. Deploy. La primera vez puede tardar mas porque arma la imagen Docker.
+
+RUTAS DISPONIBLES
+
+GET /              -> mensaje de confirmacion
+DELETE /eliminar    -> elimina un consejo. Cuerpo JSON: { "id": "aqui_el_id_del_consejo" }

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>Reportar avistamiento de: {{ mascota.nombre }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="nombre_persona">Tu nombre:</label><br>
+    <input type="text" id="nombre_persona" name="nombre_persona" required><br><br>
+
+    <label for="lugar">Donde la viste?</label><br>
+    <input type="text" id="lugar" name="lugar" required><br><br>
+
+    <button type="submit">Confirmar reporte</button>
+</form>
+
+<p><a href="{% url 'mascotas:detalle_mascota' mascota.id %}">Cancelar</a></p>
+{% endblock %}

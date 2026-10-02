@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mascotas del barrio</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #faf7f5;
+            color: #333;
+        }
+
+        header {
+            background-color: #8b0000;
+            padding: 25px 40px;
+        }
+
+        header h1 {
+            color: white;
+            margin: 0;
+            font-size: 26px;
+        }
+
+        nav {
+            background-color: #6e0000;
+            padding: 12px 40px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        a {
+            color: #8b0000;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f2e6e6;
+            color: #8b0000;
+        }
+
+        table tr:hover {
+            background-color: #fdf5f5;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #6e0000;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Mascotas perdidas y encontradas del barrio</h1>
+    </header>
+
+    <nav>
+        <a href="{% url 'mascotas:lista_mascotas' %}">Lista de mascotas</a>
+        <a href="{% url 'avistamientos:lista_avistamientos' %}">Lista de avistamientos</a>
+        <a href="{% url 'mascotas:consejos_mascotas' %}">Consejos</a>
+        <a href="{% url 'mascotas:preguntar_ia' %}">Preguntar a la IA</a>
+    </nav>
+
+    <main>
+        {% block contenido %}
+        {% endblock %}
+    </main>
+</body>
+</html>

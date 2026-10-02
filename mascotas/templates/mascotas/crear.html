@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>Agregar mascota</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="nombre">Nombre:</label><br>
+    <input type="text" id="nombre" name="nombre" required><br><br>
+
+    <label for="especie">Especie:</label><br>
+    <input type="text" id="especie" name="especie" required><br><br>
+
+    <label for="color">Color:</label><br>
+    <input type="text" id="color" name="color" required><br><br>
+
+    <label for="descripcion">Descripcion:</label><br>
+    <textarea id="descripcion" name="descripcion" required></textarea><br><br>
+
+    <label for="estado">Estado:</label><br>
+    <select id="estado" name="estado">
+        <option value="perdida">Perdida</option>
+        <option value="encontrada">Encontrada</option>
+    </select><br><br>
+
+    <button type="submit">Guardar</button>
+</form>
+
+<p><a href="{% url 'mascotas:lista_mascotas' %}">Cancelar</a></p>
+{% endblock %}

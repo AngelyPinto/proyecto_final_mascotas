@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<style>
+    .contenedor-ia {
+        max-width: 700px;
+        margin: 30px auto;
+        font-family: Arial, sans-serif;
+    }
+
+    .contenedor-ia h2 {
+        color: #8b0000;
+        margin-bottom: 20px;
+    }
+
+    .form-ia {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .form-ia input[type="text"] {
+        flex: 1;
+        padding: 10px 14px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 15px;
+    }
+
+    .form-ia input[type="text"]:focus {
+        outline: none;
+        border-color: #8b0000;
+    }
+
+    .form-ia button {
+        padding: 10px 20px;
+        background-color: #8b0000;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+    .form-ia button:hover {
+        background-color: #6e0000;
+    }
+
+    .respuesta-ia {
+        border: 1px solid #e0c4c4;
+        background-color: #fdf5f5;
+        border-radius: 10px;
+        padding: 18px 20px;
+        line-height: 1.6;
+    }
+
+    .respuesta-ia strong {
+        color: #8b0000;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .volver-link {
+        display: inline-block;
+        margin-top: 20px;
+        color: #8b0000;
+        text-decoration: none;
+    }
+
+    .volver-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="contenedor-ia">
+    <h2>Preguntale a la IA sobre mascotas</h2>
+
+    <form method="POST" class="form-ia">
+        {% csrf_token %}
+        <input type="text" name="pregunta" placeholder="Escribe tu pregunta">
+        <button type="submit">Preguntar</button>
+    </form>
+
+    {% if respuesta_ia %}
+        <div class="respuesta-ia">
+            <strong>Respuesta de la IA:</strong>
+            {{ respuesta_ia|linebreaksbr }}
+        </div>
+    {% endif %}
+
+    <a href="/" class="volver-link">Volver a la lista de mascotas</a>
+</div>
+{% endblock %}

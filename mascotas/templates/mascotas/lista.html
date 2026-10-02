@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>Lista de mascotas</h2>
+
+<p><a href="{% url 'mascotas:crear_mascota' %}">+ Agregar mascota</a></p>
+
+<ul>
+    {% for mascota in mascotas %}
+        <li>
+            <a href="{% url 'mascotas:detalle_mascota' mascota.id %}">{{ mascota.nombre }}</a>
+            - {{ mascota.especie }} ({{ mascota.color }})
+            {% if mascota.estado == 'perdida' %}
+                 Perdida
+            {% else %}
+                 Encontrada
+            {% endif %}
+        </li>
+    {% empty %}
+        <li>No hay mascotas registradas todavia.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

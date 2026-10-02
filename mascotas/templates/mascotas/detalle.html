@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>Detalle de la mascota</h2>
+
+<p><strong>Nombre:</strong> {{ mascota.nombre }}</p>
+<p><strong>Especie:</strong> {{ mascota.especie }}</p>
+<p><strong>Color:</strong> {{ mascota.color }}</p>
+<p><strong>Descripcion:</strong> {{ mascota.descripcion }}</p>
+<p><strong>Estado:</strong> {{ mascota.get_estado_display }}</p>
+
+{% if mascota.estado == 'perdida' %}
+    <p><a href="{% url 'avistamientos:reportar_avistamiento' mascota.id %}">Reportar que la vi</a></p>
+{% endif %}
+
+<p>
+    <a href="{% url 'mascotas:editar_mascota' mascota.id %}">Editar</a> |
+    <a href="{% url 'mascotas:eliminar_mascota' mascota.id %}">Eliminar</a>
+</p>
+
+<p><a href="{% url 'mascotas:lista_mascotas' %}">Volver a la lista</a></p>
+{% endblock %}

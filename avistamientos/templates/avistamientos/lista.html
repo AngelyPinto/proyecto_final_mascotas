@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block contenido %}
+<h2>Lista de avistamientos</h2>
+
+<ul>
+    {% for avistamiento in avistamientos %}
+        <li>
+            "{{ avistamiento.mascota.nombre }}" fue vista por {{ avistamiento.nombre_persona }}
+            en {{ avistamiento.lugar }} el {{ avistamiento.fecha_avistamiento }}
+            - <a href="{% url 'avistamientos:eliminar_avistamiento' avistamiento.id %}">Eliminar reporte</a>
+        </li>
+    {% empty %}
+        <li>No hay avistamientos registrados.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
