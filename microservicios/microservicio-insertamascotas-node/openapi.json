@@ -1,30 +1,28 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Microservicio de Insercion de Consejos",
-    "version": "1.0.0",
-    "description": "Microservicio en Node.js que inserta consejos y sirve de respaldo de lectura"
+    "title": "Microservicio de Inserción de Mascotas",
+    "description": "Microservicio en Node.js para registrar e insertar mascotas en la base de datos.",
+    "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "https://microservicio-insertar-node.onrender.com",
+      "description": "Servidor de Producción"
+    }
+  ],
   "paths": {
     "/": {
       "get": {
-        "summary": "Verificar que el servicio esta activo",
+        "summary": "Verificar estado del microservicio",
         "responses": {
-          "200": { "description": "Mensaje de confirmacion" }
-        }
-      }
-    },
-    "/consejos": {
-      "get": {
-        "summary": "Listar todos los consejos",
-        "responses": {
-          "200": { "description": "Lista de consejos" }
+          "200": { "description": "Servicio activo" }
         }
       }
     },
     "/insertar": {
       "post": {
-        "summary": "Insertar un consejo nuevo",
+        "summary": "Insertar una nueva mascota",
         "requestBody": {
           "required": true,
           "content": {
@@ -32,16 +30,17 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "texto": { "type": "string" }
-                },
-                "required": ["texto"]
+                  "nombre": { "type": "string", "example": "Firulais" },
+                  "especie": { "type": "string", "example": "Perro" },
+                  "estado": { "type": "string", "example": "Perdido" }
+                }
               }
             }
           }
         },
         "responses": {
-          "200": { "description": "Consejo insertado correctamente" },
-          "400": { "description": "Falta el campo texto" }
+          "200": { "description": "Mascota insertada correctamente" },
+          "400": { "description": "Datos de mascota no válidos" }
         }
       }
     }
