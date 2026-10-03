@@ -32,45 +32,16 @@ public class Main {
             responderJson(exchange, 404, "{\"error\":\"Ruta no encontrada\"}");
         });
 
+        // Redirección directa a SwaggerHub
         servidor.createContext("/api-docs", exchange -> {
-            String html = "<!DOCTYPE html>"
-                    + "<html lang=\"es\"><head><meta charset=\"UTF-8\">"
-                    + "<title>Microservicio de Eliminación de Mascotas</title>"
-                    + "<link rel=\"stylesheet\" href=\"https://unpkg.com/swagger-ui-dist@5/swagger-ui.css\" />"
-                    + "</head><body><div id=\"swagger-ui\"></div>"
-                    + "<script src=\"https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js\"></script>"
-                    + "<script>window.onload = () => {"
-                    + "SwaggerUIBundle({"
-                    + "  dom_id: '#swagger-ui',"
-                    + "  spec: {"
-                    + "    openapi: '3.0.0',"
-                    + "    info: { title: 'Microservicio de Eliminación de Mascotas', version: '1.0.0', description: 'Microservicio en Java para eliminar registros de mascotas.' },"
-                    + "    servers: [{ url: 'https://microservicio-eliminar-java.onrender.com', description: 'Servidor de Producción' }],"
-                    + "    paths: {"
-                    + "      '/': { get: { summary: 'Verificar estado del microservicio', responses: { '200': { description: 'Servicio activo' } } } },"
-                    + "      '/eliminar': {"
-                    + "        delete: {"
-                    + "          summary: 'Eliminar una mascota por ID',"
-                    + "          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { id: { type: 'string' } } } } } },"
-                    + "          responses: { '200': { description: 'Registro eliminado correctamente' } }"
-                    + "        }"
-                    + "      }"
-                    + "    }"
-                    + "  }"
-                    + "});"
-                    + "};</script></body></html>";
-
-            exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
-            byte[] bytes = html.getBytes(StandardCharsets.UTF_8);
-            exchange.sendResponseHeaders(200, bytes.length);
-            OutputStream salida = exchange.getResponseBody();
-            salida.write(bytes);
-            salida.close();
+            exchange.getResponseHeaders().set("Location", "https://app.swaggerhub.com/apis-docs/uninpahu-b8e/microservicio-eliminar-java/1.0.0");
+            exchange.sendResponseHeaders(302, -1);
+            exchange.close();
         });
 
         servidor.createContext("/eliminar", exchange -> {
             if (!exchange.getRequestMethod().equals("DELETE")) {
-                responderJson(exchange, 405, "{\"error\":\"Metodo no permitido\"}");
+                responderJson(exchange, 405, "{\"error\":\"Metodo no permitted\"}");
                 return;
             }
 
