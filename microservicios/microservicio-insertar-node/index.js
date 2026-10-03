@@ -4,6 +4,16 @@ const { MongoClient } = require('mongodb');
 const app = express();
 app.use(express.json());
 
+// --- Rutas básicas de documentación ---
+app.get('/docs', (req, res) => {
+    res.sendFile(__dirname + '/docs.html');
+});
+
+app.get('/openapi.json', (req, res) => {
+    res.sendFile(__dirname + '/openapi.json');
+});
+
+// --- Conexión a MongoDB ---
 const uri = process.env.MONGO_URI;
 const cliente = new MongoClient(uri);
 let coleccion;
@@ -16,6 +26,7 @@ async function conectar() {
 
 conectar();
 
+// --- Rutas del Microservicio ---
 app.get('/', (req, res) => {
     res.json({ mensaje: 'Microservicio de insercion de consejos (Node.js) funcionando' });
 });

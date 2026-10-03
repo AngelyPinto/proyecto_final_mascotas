@@ -1,0 +1,49 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Microservicio de Insercion de Consejos",
+    "version": "1.0.0",
+    "description": "Microservicio en Node.js que inserta consejos y sirve de respaldo de lectura"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Verificar que el servicio esta activo",
+        "responses": {
+          "200": { "description": "Mensaje de confirmacion" }
+        }
+      }
+    },
+    "/consejos": {
+      "get": {
+        "summary": "Listar todos los consejos",
+        "responses": {
+          "200": { "description": "Lista de consejos" }
+        }
+      }
+    },
+    "/insertar": {
+      "post": {
+        "summary": "Insertar un consejo nuevo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "texto": { "type": "string" }
+                },
+                "required": ["texto"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Consejo insertado correctamente" },
+          "400": { "description": "Falta el campo texto" }
+        }
+      }
+    }
+  }
+}
