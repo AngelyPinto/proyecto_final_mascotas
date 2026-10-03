@@ -4,7 +4,6 @@ const { MongoClient } = require('mongodb');
 const app = express();
 app.use(express.json());
 
-// --- Rutas básicas de documentación ---
 app.get('/docs', (req, res) => {
     res.sendFile(__dirname + '/docs.html');
 });
@@ -13,7 +12,6 @@ app.get('/openapi.json', (req, res) => {
     res.sendFile(__dirname + '/openapi.json');
 });
 
-// --- Conexión a MongoDB ---
 const uri = process.env.MONGO_URI;
 const cliente = new MongoClient(uri);
 let coleccion;
@@ -21,30 +19,24 @@ let coleccion;
 async function conectar() {
     await cliente.connect();
     const db = cliente.db('mascotas_db');
-    coleccion = db.collection('consejos');
+    coleccion = db.collection('mascotas');
 }
 
 conectar();
 
-// --- Rutas del Microservicio ---
 app.get('/', (req, res) => {
-    res.json({ mensaje: 'Microservicio de insercion de consejos (Node.js) funcionando' });
+    res.json({ mensaje: 'Microservicio de insercion de mascotas (Node.js) funcionando' });
 });
 
 app.post('/insertar', async (req, res) => {
-    const { texto } = req.body;
+    const datosMascota = req.body;
 
-    if (!texto) {
-        return res.status(400).json({ error: 'Se necesita el campo texto' });
+    if (!datosMascota || Object.keys(datosMascota).length === 0) {
+        return res.status(400).json({ error: 'Se requieren los datos de la mascota' });
     }
 
-    const resultado = await coleccion.insertOne({ texto });
-    res.json({ mensaje: 'Consejo insertado correctamente', id: resultado.insertedId });
-});
-
-app.get('/consejos', async (req, res) => {
-    const consejos = await coleccion.find({}).toArray();
-    res.json(consejos);
+    const resultado = await coleccion.insertOne(datosMascota);
+    res.json({ mensaje: 'Mascota insertada correctamente', id: resultado.insertedId });
 });
 
 const puerto = process.env.PORT || 3000;
