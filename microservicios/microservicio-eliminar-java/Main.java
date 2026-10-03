@@ -24,26 +24,53 @@ public class Main {
         int puerto = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
         HttpServer servidor = HttpServer.create(new InetSocketAddress(puerto), 0);
 
-        // Ruta raíz
         servidor.createContext("/", exchange -> {
             if (exchange.getRequestURI().getPath().equals("/") && exchange.getRequestMethod().equals("GET")) {
-                responder(exchange, 200, "{\"mensaje\":\"Microservicio de eliminacion de consejos (Java) funcionando\"}");
+                responderJson(exchange, 200, "{\"mensaje\":\"Microservicio de eliminacion de consejos (Java) funcionando\"}");
                 return;
             }
-            responder(exchange, 404, "{\"error\":\"Ruta no encontrada\"}");
+            responderJson(exchange, 404, "{\"error\":\"Ruta no encontrada\"}");
         });
 
-        // Redirección api-docs
         servidor.createContext("/api-docs", exchange -> {
-            exchange.getResponseHeaders().set("Location", "https://microservicio-eliminar-java.onrender.com/");
-            exchange.sendResponseHeaders(302, -1);
-            exchange.getResponseBody().close();
+            String html = "<!DOCTYPE html>"
+                    + "<html lang=\"es\"><head><meta charset=\"UTF-8\">"
+                    + "<title>Microservicio de Eliminación de Mascotas</title>"
+                    + "<link rel=\"stylesheet\" href=\"https://unpkg.com/swagger-ui-dist@5/swagger-ui.css\" />"
+                    + "</head><body><div id=\"swagger-ui\"></div>"
+                    + "<script src=\"https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js\"></script>"
+                    + "<script>window.onload = () => {"
+                    + "SwaggerUIBundle({"
+                    + "  dom_id: '#swagger-ui',"
+                    + "  spec: {"
+                    + "    openapi: '3.0.0',"
+                    + "    info: { title: 'Microservicio de Eliminación de Mascotas', version: '1.0.0', description: 'Microservicio en Java para eliminar registros de mascotas.' },"
+                    + "    servers: [{ url: 'https://microservicio-eliminar-java.onrender.com', description: 'Servidor de Producción' }],"
+                    + "    paths: {"
+                    + "      '/': { get: { summary: 'Verificar estado del microservicio', responses: { '200': { description: 'Servicio activo' } } } },"
+                    + "      '/eliminar': {"
+                    + "        delete: {"
+                    + "          summary: 'Eliminar una mascota por ID',"
+                    + "          requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { id: { type: 'string' } } } } } },"
+                    + "          responses: { '200': { description: 'Registro eliminado correctamente' } }"
+                    + "        }"
+                    + "      }"
+                    + "    }"
+                    + "  }"
+                    + "});"
+                    + "};</script></body></html>";
+
+            exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
+            byte[] bytes = html.getBytes(StandardCharsets.UTF_8);
+            exchange.sendResponseHeaders(200, bytes.length);
+            OutputStream salida = exchange.getResponseBody();
+            salida.write(bytes);
+            salida.close();
         });
 
-        // Endpoint para eliminar registros
         servidor.createContext("/eliminar", exchange -> {
             if (!exchange.getRequestMethod().equals("DELETE")) {
-                responder(exchange, 405, "{\"error\":\"Metodo no permitido\"}");
+                responderJson(exchange, 405, "{\"error\":\"Metodo no permitido\"}");
                 return;
             }
 
@@ -51,19 +78,19 @@ public class Main {
             String id = extraerCampo(cuerpo, "id");
 
             if (id == null) {
-                responder(exchange, 400, "{\"error\":\"Se necesita el campo id\"}");
+                responderJson(exchange, 400, "{\"error\":\"Se necesita el campo id\"}");
                 return;
             }
 
             try {
                 String resultado = eliminarEnMongo(id);
                 if (resultado.contains("\"deletedCount\":1")) {
-                    responder(exchange, 200, "{\"mensaje\":\"Consejo eliminado correctamente\"}");
+                    responderJson(exchange, 200, "{\"mensaje\":\"Consejo eliminado correctamente\"}");
                 } else {
-                    responder(exchange, 404, "{\"error\":\"No se encontro un consejo con ese id\"}");
+                    responderJson(exchange, 404, "{\"error\":\"No se encontro un consejo con ese id\"}");
                 }
             } catch (Exception e) {
-                responder(exchange, 500, "{\"error\":\"No se pudo eliminar\"}");
+                responderJson(exchange, 500, "{\"error\":\"No se pudo eliminar\"}");
             }
         });
 
@@ -104,7 +131,7 @@ public class Main {
         return null;
     }
 
-    static void responder(HttpExchange exchange, int codigo, String cuerpo) throws IOException {
+    static void responderJson(HttpExchange exchange, int codigo, String cuerpo) throws IOException {
         exchange.getResponseHeaders().set("Content-Type", "application/json");
         byte[] bytes = cuerpo.getBytes(StandardCharsets.UTF_8);
         exchange.sendResponseHeaders(codigo, bytes.length);
