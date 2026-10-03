@@ -33,9 +33,9 @@ public class Main {
             responder(exchange, 404, "{\"error\":\"Ruta no encontrada\"}");
         });
 
-        // Redirección de la documentación Swagger a SwaggerHub
+        // Redirección api-docs
         servidor.createContext("/api-docs", exchange -> {
-            exchange.getResponseHeaders().set("Location", "https://app.swaggerhub.com/apis-docs/uninpahu-b8e/microservicio-eliminar-java/1.0.0");
+            exchange.getResponseHeaders().set("Location", "https://microservicio-eliminar-java.onrender.com/");
             exchange.sendResponseHeaders(302, -1);
             exchange.getResponseBody().close();
         });
