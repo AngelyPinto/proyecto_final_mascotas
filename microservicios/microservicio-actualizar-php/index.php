@@ -1,4 +1,8 @@
 <?php
+if ($_SERVER['REQUEST_URI'] === '/api-docs') {
+    header("Location: https://app.swaggerhub.com/apis-docs/uninpahu-b8e/microservicio-actualizar-php/1.0.0");
+    exit();
+}
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS");

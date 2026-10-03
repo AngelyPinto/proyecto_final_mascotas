@@ -24,6 +24,7 @@ public class Main {
         int puerto = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
         HttpServer servidor = HttpServer.create(new InetSocketAddress(puerto), 0);
 
+        // Ruta raíz
         servidor.createContext("/", exchange -> {
             if (exchange.getRequestURI().getPath().equals("/") && exchange.getRequestMethod().equals("GET")) {
                 responder(exchange, 200, "{\"mensaje\":\"Microservicio de eliminacion de consejos (Java) funcionando\"}");
@@ -32,6 +33,14 @@ public class Main {
             responder(exchange, 404, "{\"error\":\"Ruta no encontrada\"}");
         });
 
+        // Redirección de la documentación Swagger a SwaggerHub
+        servidor.createContext("/api-docs", exchange -> {
+            exchange.getResponseHeaders().set("Location", "https://app.swaggerhub.com/apis-docs/uninpahu-b8e/microservicio-eliminar-java/1.0.0");
+            exchange.sendResponseHeaders(302, -1);
+            exchange.getResponseBody().close();
+        });
+
+        // Endpoint para eliminar registros
         servidor.createContext("/eliminar", exchange -> {
             if (!exchange.getRequestMethod().equals("DELETE")) {
                 responder(exchange, 405, "{\"error\":\"Metodo no permitido\"}");
