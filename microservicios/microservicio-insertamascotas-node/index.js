@@ -11,12 +11,17 @@ const MONGO_DATA_SOURCE = process.env.MONGO_DATA_SOURCE;
 const MONGO_DATABASE = process.env.MONGO_DATABASE;
 const MONGO_COLLECTION = process.env.MONGO_COLLECTION;
 
-// Ruta base para verificar salud del servicio
+// Ruta raíz
 app.get('/', (req, res) => {
     res.json({ mensaje: "Microservicio de inserción de mascotas (Node.js) funcionando correctamente" });
 });
 
-// Ruta POST para insertar una mascota
+// Redirección de la documentación Swagger a SwaggerHub
+app.get('/api-docs', (req, res) => {
+    res.redirect('https://app.swaggerhub.com/apis-docs/uninpahu-b8e/microservicio-insertar-node/1.0.0');
+});
+
+// Endpoint para insertar mascotas
 app.post('/insertar', async (req, res) => {
     const datosMascota = req.body;
 
