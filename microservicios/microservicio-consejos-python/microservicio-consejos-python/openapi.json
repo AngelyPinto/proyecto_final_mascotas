@@ -1,0 +1,26 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Microservicio de Consulta de Consejos",
+    "version": "1.0.0",
+    "description": "Microservicio en Python (Flask) que consulta los consejos guardados"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Verificar que el servicio esta activo",
+        "responses": {
+          "200": { "description": "Mensaje de confirmacion" }
+        }
+      }
+    },
+    "/consejos": {
+      "get": {
+        "summary": "Listar todos los consejos",
+        "responses": {
+          "200": { "description": "Lista de consejos" }
+        }
+      }
+    }
+  }
+}
